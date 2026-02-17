@@ -4,15 +4,16 @@ import "./Styles/globals.css";
 import "./Styles/variables.css";
 import { Homepage } from "./Pages/Homepage/Homepage";
 import { MoviePage } from "./Pages/MoviePage/MoviePage";
+import { GenrePage } from "./Pages/GenrePage/GenrePage";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       {/* <Homepage /> */}
 
-      <MoviePage />
+      {/* <MoviePage /> */}
+
+      <GenrePage />
     </>
   );
 }
