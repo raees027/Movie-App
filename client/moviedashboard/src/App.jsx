@@ -5,15 +5,19 @@ import "./Styles/variables.css";
 import { Homepage } from "./Pages/Homepage/Homepage";
 import { MoviePage } from "./Pages/MoviePage/MoviePage";
 import { GenrePage } from "./Pages/GenrePage/GenrePage";
+import { LoginPage } from "./Pages/LoginPage/LoginPage";
+import { SignupPage } from "./Pages/SignupPage/SignupPage";
 
 function App() {
   return (
     <>
-      {/* <Homepage /> */}
+      <Homepage />
 
       {/* <MoviePage /> */}
 
-      <GenrePage />
+      {/* <GenrePage /> */}
+      {/* <LoginPage /> */}
+      {/* <SignupPage /> */}
     </>
   );
 }

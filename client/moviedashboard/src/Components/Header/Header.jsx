@@ -34,7 +34,12 @@ export const Header = () => {
           <SearchBar />
         </div>
 
-        <div className="header-container-right-portion w-35 py-2.5 bg-(--sidebar-bgc) rounded-2xl flex justify-evenly items-center">
+        <div className="header-container-right-portion w-fit py-2.5 bg-(--sidebar-bgc) rounded-2xl flex justify-evenly items-center gap-1 pr-1  ">
+          <div className="login-signup-section text-[16px] text-(--sidebar-text) font-semibold px-2 ml-1 flex gap-2">
+            <h2 className="cursor-pointer">Login</h2>
+            <h2 className="cursor-pointer">Signup</h2>
+          </div>
+
           <div className="watch-later-text font-medium text-(--sidebar-text) ">
             <Tooltip title="Watchlater" arrow>
               <WatchLaterIcon fontSize="medium" />

@@ -1,0 +1,13 @@
+.slider-bar .ant-slider-track {
+  background-color: #e50914 !important;
+}
+
+.slider-bar .ant-slider-rail {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.slider-bar .ant-slider-handle {
+  border-color: white !important;
+
+}
+
