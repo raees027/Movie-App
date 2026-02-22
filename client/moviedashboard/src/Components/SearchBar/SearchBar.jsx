@@ -6,12 +6,12 @@ export const SearchBar = () => {
         <input
           type="text"
           placeholder="search here"
-          className="py-3.5 w-full rounded-3xl text-gray-300 text-[16px] bg-(--sidebar-bgc) outline-0 mx-5 px-4 text-grey-400"
+          className="py-3.5 w-full rounded-3xl text-gray-300 text-[16px] bg-(--sidebar-bgc) outline-0  px-4 pr-10 text-grey-400"
         />
         <SearchOutlinedIcon
           className="
           absolute
-          right-1
+          right-2
           top-1/2
           -translate-y-1/2
           text-gray-500

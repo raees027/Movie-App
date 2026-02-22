@@ -24,7 +24,7 @@ export const MoviePageForm = () => {
   return (
     <>
       <div className="form-container bg-(--form-background-color) min-w-100 min-h-100 py-8 rounded-lg flex flex-col justify-center ">
-        <h1 className="text-white text-[30px] font-medium mb-10">
+        <h1 className="text-white text-[26px] font-medium mb-10">
           Edit/Create Movies
         </h1>
         <div className="form-section flex flex-col items-center text-white">

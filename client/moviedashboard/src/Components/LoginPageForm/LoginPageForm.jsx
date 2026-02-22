@@ -6,6 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Checkbox from "@mui/material/Checkbox";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router";
 
 export const LoginPageForm = () => {
   const form = useForm({
@@ -14,6 +15,7 @@ export const LoginPageForm = () => {
   });
   const { register, handleSubmit, formState, control } = form;
   const { errors, isValid } = formState;
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -166,6 +168,25 @@ export const LoginPageForm = () => {
                   <div className="text-white ">Login</div>
                 )}
               </Button>
+            </div>
+
+            <div className="signup-section text-[14px] mt-6 text-[#ababab]">
+              <h2>
+                New to{" "}
+                <span className="font-bold text-(--sidebar-text) text-[18px]">
+                  Cinemas.
+                </span>{" "}
+                ?
+                <span
+                  className="text-white font-semibold cursor-pointer"
+                  onClick={() => {
+                    navigate("/signupPage");
+                  }}
+                >
+                  {" "}
+                  Sign up now.
+                </span>
+              </h2>
             </div>
           </form>
         </div>

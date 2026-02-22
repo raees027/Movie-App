@@ -22,7 +22,7 @@ export const GenrePageForm = () => {
   return (
     <>
       <div className="form-container bg-(--form-background-color) min-w-100 min-h-100 py-12 rounded-lg flex flex-col justify-center ">
-        <h1 className="text-white text-[30px] font-medium mb-5">
+        <h1 className="text-white text-[26px] font-medium mb-5">
           Edit/Create Genre
         </h1>
         <div className="form-section mt-5 flex flex-col items-center text-white">
@@ -65,10 +65,10 @@ export const GenrePageForm = () => {
                   variant="contained"
                   sx={{
                     backgroundColor: "#E50914",
-                    px: 3,
+                    px: 4,
                     py: 1,
-                    fontSize: "18px",
-                    fontWeight: 600,
+                    fontSize: "17px",
+                    fontWeight: 450,
                     textTransform: "none",
                     boxShadow: "none",
                     "&:hover": {
@@ -87,7 +87,7 @@ export const GenrePageForm = () => {
                 {genres.map((genre, index) => (
                   <div
                     key={index}
-                    className="genre-card  w-24  pb-5 pt-.5 rounded-md bg-(--sidebar-text) "
+                    className="genre-card  w-24  pb-4 pt-.5 rounded-md bg-(--sidebar-text) "
                   >
                     <div className="action-icons  flex justify-end   ">
                       <div className="edit-icon">
@@ -108,9 +108,9 @@ export const GenrePageForm = () => {
                       </div> */}
                     </div>
 
-                    <div className="genre-text  mt-1 font-semibold ">
+                    <h2 className="genre-text  mt-1 font-semibold text-[14px]">
                       {genre}
-                    </div>
+                    </h2>
                   </div>
                 ))}
               </div>

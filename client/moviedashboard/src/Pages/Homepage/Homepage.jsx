@@ -6,8 +6,8 @@ import { Sidebar } from "../../Components/Sidebar/Sidebar";
 export const Homepage = () => {
   return (
     <>
-      <div className="home-page-container min-h-screen w-screen m-0 py-3  pr-5 flex     ">
-        <div className="side-bar ml-1 ">
+      <div className="home-page-container min-h-screen w-screen m-0  pr-5 flex     ">
+        <div className="side-bar  ">
           <Sidebar />
         </div>
         <div className="home h-screen w-full m-0 pt-2 bg-black text-white flex flex-col items-center ">
