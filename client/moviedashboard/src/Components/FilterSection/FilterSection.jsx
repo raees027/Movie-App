@@ -9,7 +9,6 @@ import { Button } from "@mui/material";
 
 export const FilterSection = () => {
   const [filter, setFilter] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedRatings, setSelectedRatings] = useState([]);
 
   const isFilterActive = filter && filter !== "all";
