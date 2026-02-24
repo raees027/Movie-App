@@ -1,67 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
-const Movie = require("../Models/movieModal");
+const {
+  getMovieList,
+  getMovieListWithGenre,
+  creatMovieList,
+  updateMovieListWithGenre,
+} = require("../controllers/movieController");
 
-router.get("/", async (req, res) => {
-  try {
-    const movielist = await Movie.find();
-    res.status(200).json(movielist);
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
-  }
-});
+router.get("/", getMovieList);
 
-router.get("/moviesWithGenre", async (req, res) => {
-  try {
-    const movielist = await Movie.find().populate("genre");
-    res.status(200).json(movielist);
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
-  }
-});
+router.get("/moviesWithGenre", getMovieListWithGenre);
 
-router.post("/", async (req, res) => {
-  try {
-    const isExist = await Movie.findOne({ title: req.body.title });
-
-    if (!isExist) {
-      const movielist = await Movie.create(req.body);
-      return res.status(200).json(movielist);
-    }
-    res.status(400).json({
-      message: "Movie with this name already exist",
-    });
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
-  }
-});
+router.post("/", creatMovieList);
 
 //update movie with genre
-router.put("/updateMovieWithGenre/:movieID", async (req, res) => {
-  try {
-    const movie = await Movie.findByIdAndUpdate(
-      req.params.movieID,
-      {
-        $push: {
-          genre: req.body.genreID,
-        },
-      },
-      { new: true },
-    );
-
-    res.status(200).json(movie);
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
-  }
-});
+router.put("/updateMovieWithGenre/:movieID", updateMovieListWithGenre);
 
 module.exports = router;
