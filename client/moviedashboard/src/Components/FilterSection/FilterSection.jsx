@@ -18,7 +18,7 @@ export const FilterSection = () => {
 
   const handleResetFilters = () => {
     !isFilterActive;
-    set("");
+    setFilter("");
     setSelectedRatings([]);
   };
 

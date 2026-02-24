@@ -133,7 +133,12 @@ export const LoginPageForm = () => {
                 Remember me
               </label>
 
-              <span className="cursor-pointer hover:text-white">
+              <span
+                className="cursor-pointer hover:text-white"
+                onClick={() => {
+                  navigate("/forgetpasswordPage");
+                }}
+              >
                 Forgot password?
               </span>
             </div>

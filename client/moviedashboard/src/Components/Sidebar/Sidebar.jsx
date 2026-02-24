@@ -5,11 +5,11 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="sidebar-container bg-(--sidebar-bgc)  w-60 h-screen p-5  rounded-4xl flex flex-col ">
-        <div className="side-heading font-sans text-[36px] pt-5 text-(--sidebar-text) font-extrabold">
+      <div className="sidebar-container bg-(--sidebar-bgc)  w-60 h-full p-5  rounded-4xl flex flex-col ">
+        <div className="side-heading font-sans text-[36px] pt-1 text-(--sidebar-text) font-extrabold">
           Cinemas.
         </div>
-        <div className="sidebar-section-top   mt-40 flex flex-col gap-10 ">
+        <div className="sidebar-section-top mt-15 flex flex-col gap-10 ">
           <div
             className="sidebar-items font-[lato] text-[18px] font-bold cursor-pointer text-white hover:text-(--sidebar-text)   "
             onClick={() => {
