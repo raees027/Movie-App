@@ -10,6 +10,7 @@ import { SignupPage } from "./Pages/SignupPage/SignupPage";
 import { Route, Routes } from "react-router";
 import { WatchListpage } from "./Pages/WatchListpage/WatchListpage";
 import { ForgetPasswordPage } from "./Pages/ForgetPasswordPage/ForgetPasswordPage";
+import { ProfilePage } from "./Pages/ProfilePage/ProfilePage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/signupPage" element={<SignupPage />} />
         <Route path="/forgetpasswordPage" element={<ForgetPasswordPage />} />
         <Route path="/watchList" element={<WatchListpage />} />
+        <Route path="/profilePage" element={<ProfilePage />} />
       </Routes>
     </>
   );

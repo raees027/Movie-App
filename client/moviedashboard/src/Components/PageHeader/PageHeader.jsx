@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router";
+import WatchLaterIcon from "@mui/icons-material/WatchLater";
+
+import Tooltip from "@mui/material/Tooltip";
 import { UserAccountMenu } from "../UserAccountMenu/UserAccountMenu";
 
 export const PageHeader = () => {
@@ -18,7 +21,19 @@ export const PageHeader = () => {
         </div>
 
         <div className="header-right-section flex justify-center items-center pr-1">
-          <UserAccountMenu />
+          <div
+            className="watch-later-text font-medium text-(--sidebar-text) cursor-pointer pr-1.5"
+            onClick={() => {
+              navigate("/watchList");
+            }}
+          >
+            <Tooltip title="Watchlater" arrow>
+              <WatchLaterIcon fontSize="medium" />
+            </Tooltip>
+          </div>
+          <div className="user-account-menu-section">
+            <UserAccountMenu />
+          </div>
         </div>
       </div>
     </>

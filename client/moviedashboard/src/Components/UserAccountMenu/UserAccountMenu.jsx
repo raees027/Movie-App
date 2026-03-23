@@ -101,7 +101,14 @@ export const UserAccountMenu = () => {
         >
           <MenuItem>
             <Avatar src="movieswallpaper.jpg" sx={{ width: 22, height: 22 }} />
-            Profile
+            <div
+              className="profile-page"
+              onClick={() => {
+                navigate("/profilePage");
+              }}
+            >
+              Profile
+            </div>
           </MenuItem>
 
           <MenuItem>
@@ -133,6 +140,7 @@ export const UserAccountMenu = () => {
               className="logout-button"
               onClick={() => {
                 navigate("/loginPage");
+                localStorage.clear();
               }}
             >
               Logout

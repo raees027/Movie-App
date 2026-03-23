@@ -1,11 +1,17 @@
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { useContext } from "react";
+import { SearchListContext } from "../../Context/SearchListContext";
 export const SearchBar = () => {
+  const { searchInputValue, handleChange, clearSearch } =
+    useContext(SearchListContext);
   return (
     <>
       <div className="search-container w-100 relative ">
         <input
           type="text"
           placeholder="search here"
+          value={searchInputValue}
+          onChange={handleChange}
           className="py-3.5 w-full rounded-3xl text-gray-300 text-[16px] bg-(--sidebar-bgc) outline-0  px-4 pr-10 text-grey-400"
         />
         <SearchOutlinedIcon

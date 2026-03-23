@@ -1,24 +1,84 @@
 import { useForm, Controller } from "react-hook-form";
-import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Slider as AntdSlider } from "antd";
 import "../MoviePageForm/MoviePageForm.css";
 import Checkbox from "@mui/material/Checkbox";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import axios from "axios";
+import { ApiContext } from "../../Context/ApiContext";
+import { ToastContainer, toast, Slide } from "react-toastify";
 
 export const MoviePageForm = () => {
   const form = useForm();
-  const { register, handleSubmit, formState, control } = form;
+  const { register, handleSubmit, formState, control, watch, reset, setFocus } =
+    form;
   const { errors } = formState;
   const [checked, setChecked] = useState(true);
-  const genres = ["Action", "Drama", "Comedy", "Thriller", "Sci-Fi", "Horror"];
+  const { MOVIE_API_BASE_URL, GENRE_API_BASE_URL } = useContext(ApiContext);
+  const [genres, setGenres] = useState([]);
+  const [filteredGenres, setFilteredGenres] = useState([]);
 
+  const [imagePreview, setImagePreview] = useState("");
+
+  const moviePoster = watch("moviePoster");
+  useEffect(() => {
+    if (moviePoster && moviePoster[0]) {
+      const file = moviePoster[0];
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
+  }, [moviePoster]);
+
+  useEffect(() => {
+    fetchGenre();
+    setFocus("title");
+  }, []);
+
+  const fetchGenre = async () => {
+    const response = await axios(GENRE_API_BASE_URL);
+    setGenres(response.data);
+    console.log(response.data);
+  };
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("rating", data.rating);
+    formData.append("genres", JSON.stringify(filteredGenres));
+
+    if (data.moviePoster && data.moviePoster[0]) {
+      formData.append("moviePoster", data.moviePoster[0]);
+    }
+
+    try {
+      const response = await axios.post(MOVIE_API_BASE_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(response.data);
+      reset();
+      setImagePreview("");
+    } catch (error) {
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+    }
+
     console.log("form-submitted", data);
   };
   return (
@@ -30,11 +90,27 @@ export const MoviePageForm = () => {
         <div className="form-section flex flex-col items-center text-white">
           <form onSubmit={handleSubmit(onSubmit)} className="w-full px-12">
             <div className="uploading-section mb-4 flex flex-col items-center">
+              <div>
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt=""
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      marginBottom: "20px",
+                      borderRadius: "8px",
+                      objectFit: "cover",
+                      boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
+                    }}
+                  />
+                )}
+              </div>
               <input
                 type="file"
                 id="upload-image"
                 hidden
-                {...register("profilePicture")}
+                {...register("moviePoster")}
               />
 
               <label htmlFor="upload-image">
@@ -98,7 +174,7 @@ export const MoviePageForm = () => {
                     <AntdSlider
                       min={0}
                       max={5}
-                      step={1}
+                      step={0.5}
                       value={field.value}
                       onChange={(value) => field.onChange(value)}
                     />
@@ -122,18 +198,20 @@ export const MoviePageForm = () => {
                   defaultValue={[]}
                   render={({ field }) => (
                     <div className="grid grid-cols-3 gap-3">
-                      {genres.map((genre) => (
+                      {genres?.map((genre) => (
                         <label
-                          key={genre}
+                          key={genre._id}
                           className="flex items-center gap-2 text-gray-200"
                         >
                           <Checkbox
-                            checked={field.value.includes(genre)}
+                            checked={field.value.includes(genre._id)}
                             onChange={(e) => {
                               const newValue = e.target.checked
-                                ? [...field.value, genre]
-                                : field.value.filter((g) => g !== genre);
+                                ? [...field.value, genre._id]
+                                : field.value.filter((id) => id !== genre._id);
+
                               field.onChange(newValue);
+                              setFilteredGenres(newValue);
                             }}
                             sx={{
                               color: "#fff",
@@ -142,7 +220,8 @@ export const MoviePageForm = () => {
                               },
                             }}
                           />
-                          <span className="text-sm">{genre}</span>
+
+                          <span className="text-bold ">{genre.title}</span>
                         </label>
                       ))}
                     </div>
@@ -155,6 +234,7 @@ export const MoviePageForm = () => {
               {/* <button type="submit">Submit</button> */}
               <Button
                 variant="contained"
+                type="submit"
                 sx={{
                   backgroundColor: "#E50914",
                   px: 3,

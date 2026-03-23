@@ -1,12 +1,14 @@
 import { useForm, Controller } from "react-hook-form";
 import "../MoviePageForm/MoviePageForm.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Checkbox from "@mui/material/Checkbox";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router";
+import { ApiContext } from "../../Context/ApiContext";
+import axios from "axios";
 
 export const LoginPageForm = () => {
   const form = useForm({
@@ -15,20 +17,35 @@ export const LoginPageForm = () => {
   });
   const { register, handleSubmit, formState, control } = form;
   const { errors, isValid } = formState;
-  const navigate = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { USERS_API_BASE_URL } = useContext(ApiContext);
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    setLoading(true);
-    setTimeout(() => {
-      console.log("Login data:", data);
-      setLoading(false);
-    }, 2000);
+    // setLoading(true);
+    // setTimeout(() => {
+    //   console.log("Login data:", data);
+    //   setLoading(false);
+    // }, 2000);
 
-    // console.log("form-submitted", data);
+    try {
+      setLoading(true);
+
+      const response = await axios.post(`${USERS_API_BASE_URL}/login`, {
+        emailidorphonenumber: data.emailOrPhone,
+        password: data.password,
+      });
+      console.log("Login success data:", response.data);
+      localStorage.setItem("token", response.data.accessToken);
+      navigate("/profilePage");
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <>
       <div className="form-container bg-(--form-background-color) min-w-100 min-h-100 py-8 rounded-lg flex flex-col justify-center ">
@@ -166,7 +183,10 @@ export const LoginPageForm = () => {
               >
                 {loading ? (
                   <>
-                    <CircularProgress size={20} sx={{ color: "white" }} />
+                    <CircularProgress
+                      size={20}
+                      sx={{ color: "white", marginRight: "2px" }}
+                    />
                     Logging in...
                   </>
                 ) : (

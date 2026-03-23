@@ -1,4 +1,4 @@
-const { Users } = require("../Models/userModal");
+const Users = require("../Models/userModal");
 const {
   comparePasswordHash,
   generatePasswordHash,
@@ -28,9 +28,9 @@ const login = async (req, res) => {
   }
 
   const accessToken = generateAccessToken(user._id);
-  const refershToken = generateRefreshToken(user._id);
+  const refreshToken = generateRefreshToken(user._id);
 
-  res.cookie("refreshToken", refershToken, {
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
   });
@@ -49,8 +49,8 @@ const signup = async (req, res) => {
     const isExist = await Users.findOne({ emailidorphonenumber });
 
     if (isExist) {
-      res.status(400).json({
-        messaage: "Email Id/Phonenumber already exist",
+      return res.status(400).json({
+        message: "Email Id/Phonenumber already exist",
       });
     }
 
@@ -61,7 +61,7 @@ const signup = async (req, res) => {
       message: "Account has been created",
     });
 
-    res.json(hashedPassword);
+    // res.json(hashedPassword);
   } catch (error) {
     res.json({
       messaage: error.message,
@@ -70,7 +70,7 @@ const signup = async (req, res) => {
 };
 
 const refreshToken = async (req, res) => {
-  const userID = verifyRefershToken(req.cookie.refreshToken);
+  const userID = verifyRefershToken(req.cookies.refreshToken);
   if (!userID) {
     return res.status(401).json({
       message: "refresh token expired",
@@ -80,7 +80,7 @@ const refreshToken = async (req, res) => {
   const accessToken = generateAccessToken(userID);
   const refreshToken = generateRefreshToken(userID);
 
-  res.cookie("refershToken", refreshToken, {
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
   });
@@ -88,4 +88,9 @@ const refreshToken = async (req, res) => {
   res.json({ accessToken });
 };
 
-module.exports = { login, signup, refreshToken };
+const profile = async (req, res) => {
+  const user = await Users.findById(req.userId).select("-password");
+  res.json(user);
+};
+
+module.exports = { login, signup, refreshToken, profile };

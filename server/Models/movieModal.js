@@ -22,6 +22,10 @@ const moviesSchema = new mongoose.Schema(
         ref: "Genres",
       },
     ],
+
+    image: {
+      type: String,
+    },
   },
   { timestamps: true },
 );

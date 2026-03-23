@@ -5,6 +5,7 @@ const User = require("../Models/userModal");
 const {
   login,
   signup,
+  profile,
   refreshToken,
 } = require("../controllers/userController");
 const { checkAuth } = require("../middleware/checkAuth");
@@ -38,6 +39,7 @@ router.get("/watchList/:userID", checkAuth, async (req, res) => {
     });
   }
 });
+
 // router.post("/", async (req, res) => {
 //   try {
 //     const isExist = await User.findOne({ name: req.body.name });
@@ -79,6 +81,7 @@ router.put("/watchlater/:userID", async (req, res) => {
 
 router.post("/login", login);
 router.post("/signup", signup);
+router.get("/profile", checkAuth, profile);
 router.get("/refresh-token", refreshToken);
 
 module.exports = router;

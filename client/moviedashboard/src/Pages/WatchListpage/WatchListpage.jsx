@@ -8,9 +8,9 @@ export const WatchListpage = () => {
   return (
     <>
       <div className="home-page-container min-h-screen w-screen m-0  pr-5 flex     ">
-        <div className="side-bar  ">
+        {/* <div className="side-bar  ">
           <Sidebar />
-        </div>
+        </div> */}
         <div className="home h-screen w-full  pt-2 flex flex-col items-center ">
           <div className="header-section-watchlist h-17 w-full flex justify-end items-center ">
             <UserAccountMenu />

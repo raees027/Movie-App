@@ -1,11 +1,14 @@
 import { useForm, Controller, Watch } from "react-hook-form";
 import "../MoviePageForm/MoviePageForm.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import Checkbox from "@mui/material/Checkbox";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import axios from "axios";
+
+import { ToastContainer, toast, Slide } from "react-toastify";
+import { ApiContext } from "../../Context/ApiContext";
 
 export const SignupPageForm = () => {
   const form = useForm({
@@ -19,12 +22,64 @@ export const SignupPageForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { USERS_API_BASE_URL } = useContext(ApiContext);
+
   const onSubmit = async (data) => {
     setLoading(true);
-    setTimeout(() => {
-      console.log("Login data:", data);
+    // setTimeout(() => {
+    //   console.log("Login data:", data);
+    //   setLoading(false);
+    // }, 2000);
+
+    // if (!data.password || !data.confirmPassword) {
+    //   toast.info("All are required fileds", {
+    //     position: "top-right",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "dark",
+    //     transition: Slide,
+    //   });
+    //   setLoading(false);
+    //   return;
+    // }
+
+    try {
+      const response = await axios.post(`${USERS_API_BASE_URL}/signup`, {
+        emailidorphonenumber: data.emailOrPhone,
+        password: data.password,
+      });
+      toast.success("Account has created successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+      console.log(response.data);
+    } catch (error) {
+      toast.error(error.response?.data?.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+      // console.log(error.response?.data?.message);
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
 
     // console.log("form-submitted", data);
   };
@@ -121,7 +176,7 @@ export const SignupPageForm = () => {
               <label>Confirm Password</label>
 
               <input
-                type={showPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 {...register("confirmPassword", {
                   required: "Confirm Password is required",
                   validate: (value) =>
@@ -191,6 +246,21 @@ export const SignupPageForm = () => {
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Slide}
+        className="mt-12"
+      />
+      ;
     </>
   );
 };

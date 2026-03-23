@@ -6,13 +6,17 @@ const {
   getMovieListWithGenre,
   creatMovieList,
   updateMovieListWithGenre,
+  getMoviePoster,
+  upload,
 } = require("../controllers/movieController");
 
 router.get("/", getMovieList);
 
 router.get("/moviesWithGenre", getMovieListWithGenre);
 
-router.post("/", creatMovieList);
+router.get("/moviePoster", getMoviePoster);
+
+router.post("/", upload.single("moviePoster"), creatMovieList);
 
 //update movie with genre
 router.put("/updateMovieWithGenre/:movieID", updateMovieListWithGenre);

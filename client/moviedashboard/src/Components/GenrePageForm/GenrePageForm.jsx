@@ -1,24 +1,51 @@
 import { useForm, Controller } from "react-hook-form";
 import "../MoviePageForm/MoviePageForm.css";
-import { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
+import axios from "axios";
+import { ApiContext } from "../../Context/ApiContext";
 
 export const GenrePageForm = () => {
   const form = useForm();
-  const { register, handleSubmit, formState, control } = form;
+  const { register, handleSubmit, formState, control, setFocus, reset } = form;
   const { errors } = formState;
-  const genres = ["Action", "Drama", "Comedy", "Thriller", "Sci-Fi", "Horror"];
+  const { GENRE_API_BASE_URL } = useContext(ApiContext);
+  const [genres, setGenres] = useState([]);
+  const titleInputRef = useRef();
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  useEffect(() => {
+    fetchGenre();
+    setFocus("title");
+  }, []);
+  const fetchGenre = async () => {
+    try {
+      const response = await axios(GENRE_API_BASE_URL);
+      setGenres(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
   };
-  const onSubmit = (data) => {
-    console.log("form-submitted", data);
+
+  const onSubmit = async (data) => {
+    // console.log("form-submitted", data);
+    try {
+      const response = await axios.post(GENRE_API_BASE_URL, {
+        title: data.title,
+      });
+      fetchGenre();
+      console.log("==genre data", response.data);
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+    reset();
+    setFocus("title");
   };
+
   return (
     <>
       <div className="form-container bg-(--form-background-color) min-w-100 min-h-100 py-12 rounded-lg flex flex-col justify-center ">
@@ -62,6 +89,7 @@ export const GenrePageForm = () => {
               <div className="submit-section mt-3 rounded-lg py-3 ">
                 {/* <button type="submit">Submit</button> */}
                 <Button
+                  type="submit"
                   variant="contained"
                   sx={{
                     backgroundColor: "#E50914",
@@ -84,9 +112,9 @@ export const GenrePageForm = () => {
             </div>
             <div className="form-lower-section flex justify-center mt-8 ">
               <div className="genre-section grid grid-cols-3 gap-5">
-                {genres.map((genre, index) => (
+                {genres.map((genre) => (
                   <div
-                    key={index}
+                    key={genre._id}
                     className="genre-card  w-24  pb-4 pt-.5 rounded-md bg-(--sidebar-text) "
                   >
                     <div className="action-icons  flex justify-end   ">
@@ -109,7 +137,7 @@ export const GenrePageForm = () => {
                     </div>
 
                     <h2 className="genre-text  mt-1 font-semibold text-[14px]">
-                      {genre}
+                      {genre.title}
                     </h2>
                   </div>
                 ))}
