@@ -7,6 +7,7 @@ const {
   signup,
   profile,
   refreshToken,
+  getWatchListMovies,
 } = require("../controllers/userController");
 const { checkAuth } = require("../middleware/checkAuth");
 
@@ -20,6 +21,11 @@ router.get("/", async (req, res) => {
     });
   }
 });
+router.post("/login", login);
+router.post("/signup", signup);
+router.get("/profile", checkAuth, profile);
+router.get("/refresh-token", refreshToken);
+router.get("/watchList", checkAuth, getWatchListMovies);
 
 //watchList
 router.get("/watchList/:userID", checkAuth, async (req, res) => {
@@ -78,10 +84,5 @@ router.put("/watchlater/:userID", async (req, res) => {
     });
   }
 });
-
-router.post("/login", login);
-router.post("/signup", signup);
-router.get("/profile", checkAuth, profile);
-router.get("/refresh-token", refreshToken);
 
 module.exports = router;

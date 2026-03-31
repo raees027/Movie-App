@@ -5,7 +5,7 @@ export const LoginPage = () => {
   return (
     <div className="login-page-form-component h-screen w-screen  ">
       <div className="header-section">
-        <PageHeader />
+        <PageHeader showWatchList={false} showUserAccessIcon={false} />
       </div>
 
       <div className="login-page-form-section h-[calc(100%-50px)] w-screen flex justify-center items-center">

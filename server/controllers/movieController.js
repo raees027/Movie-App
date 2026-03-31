@@ -1,6 +1,7 @@
 const Movie = require("../Models/movieModal");
 const multer = require("multer");
 const fs = require("fs");
+const mongoose = require("mongoose");
 const path = require("path");
 
 const storage = multer.diskStorage({
@@ -126,11 +127,40 @@ const updateMovieListWithGenre = async (req, res) => {
     });
   }
 };
+
+const getFilteredMovies = async (req, res) => {
+  try {
+    const { genre, ratings } = req.query;
+    let filteredQuery = {};
+    if (genre && mongoose.Types.ObjectId.isValid(genre)) {
+      filteredQuery.genre = {
+        $in: [new mongoose.Types.ObjectId(genre)],
+      };
+    }
+
+    if (ratings && typeof ratings === "string") {
+      const ratingArray = ratings.split(",").map(Number);
+      filteredQuery.rating = { $in: ratingArray };
+    }
+
+    console.log("FINAL QUERY:", filteredQuery);
+
+    const filteredMovies = await Movie.find(filteredQuery).populate("genre");
+
+    res.status(200).json(filteredMovies);
+  } catch (error) {
+    console.error("🔥 FULL ERROR:", error);
+    res.status(500).json({
+      message: "Error filtering movies",
+    });
+  }
+};
 module.exports = {
   getMovieList,
   getMovieListWithGenre,
   creatMovieList,
   getMoviePoster,
   updateMovieListWithGenre,
+  getFilteredMovies,
   upload,
 };

@@ -3,36 +3,16 @@ import Stack from "@mui/material/Stack";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { ApiContext } from "../../Context/ApiContext";
-import { SearchListContext } from "../../Context/SearchListContext";
+import { useContext } from "react";
+import { SearchListContext } from "../../context/SearchListContext";
 
-export const Movies = () => {
-  const { movieList, setMovieList, searchInputValue } =
-    useContext(SearchListContext);
-  const { MOVIE_API_BASE_URL } = useContext(ApiContext);
+export const Movies = ({ movieList }) => {
+  // const { movieList } = useContext(SearchListContext);
+  // console.log("movieli in movies", movieList);
 
-  const fetchMovieList = async () => {
-    try {
-      const response = await axios(`${MOVIE_API_BASE_URL}/moviesWithGenre`, {
-        params: {
-          query: searchInputValue,
-        },
-      });
-
-      setMovieList(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      fetchMovieList();
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [searchInputValue]);
+  if (!Array.isArray(movieList)) {
+    return <p className="text-white">Loading...</p>; // 🛡️ prevents crash
+  }
 
   return (
     <div className="movie-container pt-10 px-6">
@@ -83,11 +63,9 @@ export const Movies = () => {
 
               <div className="genre-items flex flex-wrap justify-center ">
                 {movie.genre?.map((gen) => (
-                  <>
-                    <h3 key={gen._id} className="text-sm text-gray-270 ml-2">
-                      {gen.title}
-                    </h3>
-                  </>
+                  <h3 key={gen._id} className="text-sm text-gray-270 ml-2">
+                    {gen.title}
+                  </h3>
                 ))}
               </div>
 

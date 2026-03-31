@@ -32,10 +32,16 @@ export const LoginPageForm = () => {
     try {
       setLoading(true);
 
-      const response = await axios.post(`${USERS_API_BASE_URL}/login`, {
-        emailidorphonenumber: data.emailOrPhone,
-        password: data.password,
-      });
+      const response = await axios.post(
+        `${USERS_API_BASE_URL}/login`,
+        {
+          emailidorphonenumber: data.emailOrPhone,
+          password: data.password,
+        },
+        {
+          withCredentials: true,
+        },
+      );
       console.log("Login success data:", response.data);
       localStorage.setItem("token", response.data.accessToken);
       navigate("/profilePage");

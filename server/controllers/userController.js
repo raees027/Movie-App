@@ -33,6 +33,7 @@ const login = async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
+    sameSite: "lax",
   });
 
   res.json({
@@ -83,6 +84,7 @@ const refreshToken = async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
+    sameSite: "lax",
   });
 
   res.json({ accessToken });
@@ -93,4 +95,29 @@ const profile = async (req, res) => {
   res.json(user);
 };
 
-module.exports = { login, signup, refreshToken, profile };
+const getWatchListMovies = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await Users.findById(userId).populate({
+      path: "movies",
+      model: "Movies",
+      populate: {
+        path: "genre",
+        model: "Genres",
+      },
+    });
+
+    if (!userId) {
+      res.status(404).json({
+        message: "User not found",
+      });
+    }
+    res.json(user.movies);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { login, signup, refreshToken, profile, getWatchListMovies };

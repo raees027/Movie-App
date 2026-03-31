@@ -2,10 +2,12 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { RatingFilter } from "./RatingFilter";
 import { Button } from "@mui/material";
+import { useGenres } from "../../hooks/useGenres";
+import { useMovies } from "../../hooks/useMovies";
 
 export const FilterSection = () => {
   const [filter, setFilter] = useState("");
@@ -14,7 +16,21 @@ export const FilterSection = () => {
   const isFilterActive = filter && filter !== "all";
   const isAnyFilterActive = filter !== "" || selectedRatings.length > 0;
 
-  const genres = ["Action", "Drama", "Comedy", "Thriller", "Sci-Fi", "Horror"];
+  const { fetchGenreList, genreList } = useGenres();
+  const { fetchFilteredMovies } = useMovies();
+
+  useEffect(() => {
+    fetchGenreList();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    fetchFilteredMovies(filter || "all", selectedRatings);
+
+    return () => {};
+  }, [filter, selectedRatings]);
+
+  console.log("genrelist==", genreList);
 
   const handleResetFilters = () => {
     !isFilterActive;
@@ -107,9 +123,9 @@ export const FilterSection = () => {
               <em>All</em>
             </MenuItem>
 
-            {genres.map((genre) => (
-              <MenuItem key={genre} value={genre}>
-                {genre}
+            {genreList.map((genre) => (
+              <MenuItem key={genre._id} value={genre._id}>
+                {genre.title}
               </MenuItem>
             ))}
           </Select>
